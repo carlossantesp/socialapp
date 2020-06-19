@@ -7,6 +7,7 @@
   <title>{{ config('app.name') }}</title>
   <!-- CSRF Token -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
+  <meta name="user" content="{{ Auth::user() }}">
   <!-- Styles -->
   <link rel="stylesheet" href="{{ mix('css/app.css') }}">
 </head>
