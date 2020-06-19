@@ -14,8 +14,8 @@
                         alt=""
                     />
                     <div>
-                        <h5 class="mb-1">Carlos Santillan</h5>
-                        <div class="small text-muted">Hace una hora</div>
+                        <h5 class="mb-1">{{ status.user_name }}</h5>
+                        <div class="small text-muted">{{ status.ago }}</div>
                     </div>
                 </div>
 
