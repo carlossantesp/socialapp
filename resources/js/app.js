@@ -8,9 +8,15 @@ require("./bootstrap");
 
 window.Vue = require("vue");
 
+window.EventBus = new Vue();
+
 Vue.component(
     "status-form",
     require("./components/StatusFormComponent.vue").default
+);
+Vue.component(
+    "statuses-list",
+    require("./components/StatusesListComponent.vue").default
 );
 
 /**

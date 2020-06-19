@@ -15,11 +15,6 @@
                 </button>
             </div>
         </form>
-        <ul>
-            <li v-for="(status, index) in statuses" :key="index">
-                {{ status.body }}
-            </li>
-        </ul>
     </div>
 </template>
 
@@ -27,14 +22,13 @@
 export default {
     data() {
         return {
-            body: "",
-            statuses: []
+            body: ""
         };
     },
     methods: {
         submit() {
             axios.post("/statuses", { body: this.body }).then(resp => {
-                this.statuses.push(resp.data);
+                EventBus.$emit("status-created", resp.data);
                 this.body = "";
             });
         }

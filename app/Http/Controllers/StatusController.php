@@ -7,11 +7,10 @@ use App\Status;
 
 class StatusController extends Controller
 {
-    public function __construct()
+    public function index()
     {
-        $this->middleware('auth');
+        return Status::latest()->paginate();
     }
-
     public function store(StatusRequest $request)
     {
         $status = Status::create([
