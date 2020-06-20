@@ -1931,6 +1931,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1989,6 +1990,32 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2004,6 +2031,20 @@ __webpack_require__.r(__webpack_exports__);
     EventBus.$on("status-created", function (status) {
       _this.statuses.unshift(status);
     });
+  },
+  methods: {
+    like: function like(status) {
+      axios.post("/statuses/".concat(status.id, "/likes")).then(function (resp) {
+        status.is_liked = true;
+        status.likes_count++;
+      });
+    },
+    unlike: function unlike(status) {
+      axios["delete"]("/statuses/".concat(status.id, "/likes")).then(function (resp) {
+        status.is_liked = false;
+        status.likes_count--;
+      });
+    }
   }
 });
 
@@ -37610,7 +37651,10 @@ var staticRenderFns = [
       _c(
         "button",
         { staticClass: "btn btn-primary", attrs: { id: "create-status" } },
-        [_vm._v("\n                Publicar\n            ")]
+        [
+          _c("i", { staticClass: "fa fa-paper-plane mr-1" }),
+          _vm._v("\n                Publicar\n            ")
+        ]
       )
     ])
   }
@@ -37638,6 +37682,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
+    { on: { click: _vm.redirectIfGuest } },
     _vm._l(_vm.statuses, function(status, index) {
       return _c(
         "div",
@@ -37668,7 +37713,63 @@ var render = function() {
             _c("p", { staticClass: "card-text text-secondary" }, [
               _vm._v(_vm._s(status.body))
             ])
-          ])
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "card-footer p-2 d-flex justify-content-between align-items-center"
+            },
+            [
+              status.is_liked
+                ? _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-link btn-sm",
+                      attrs: { dusk: "unlike-btn" },
+                      on: {
+                        click: function($event) {
+                          return _vm.unlike(status)
+                        }
+                      }
+                    },
+                    [
+                      _c("i", {
+                        staticClass: "fa fa-thumbs-up text-primary mr-1"
+                      }),
+                      _vm._v(" "),
+                      _c("strong", [_vm._v("TE GUSTA")])
+                    ]
+                  )
+                : _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-link btn-sm",
+                      attrs: { dusk: "like-btn" },
+                      on: {
+                        click: function($event) {
+                          return _vm.like(status)
+                        }
+                      }
+                    },
+                    [
+                      _c("i", {
+                        staticClass: "far fa-thumbs-up text-primary mr-1"
+                      }),
+                      _vm._v("\n                ME GUSTA\n            ")
+                    ]
+                  ),
+              _vm._v(" "),
+              _c("div", { staticClass: "mr-2 text-secondary" }, [
+                _c("i", { staticClass: "far fa-thumbs-up" }),
+                _vm._v(" "),
+                _c("span", { attrs: { dusk: "likes-count" } }, [
+                  _vm._v(_vm._s(status.likes_count))
+                ])
+              ])
+            ]
+          )
         ]
       )
     }),
@@ -50081,6 +50182,13 @@ module.exports = {
     },
     guest: function guest() {
       return !this.isAuthenticated;
+    }
+  },
+  methods: {
+    redirectIfGuest: function redirectIfGuest() {
+      if (this.guest) {
+        return window.location.href = "/login";
+      }
     }
   }
 };

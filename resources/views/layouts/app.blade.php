@@ -5,16 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>{{ config('app.name') }}</title>
+  
   <!-- CSRF Token -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <meta name="user" content="{{ Auth::user() }}">
+
+  <!-- Iconos de font-awesome -->
+    <script src="https://kit.fontawesome.com/cdea7f1aec.js" crossorigin="anonymous"></script>
+
   <!-- Styles -->
   <link rel="stylesheet" href="{{ mix('css/app.css') }}">
 </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-light navbar-socialapp">
     <div class="container">
-      <a class="navbar-brand" href="{{ url('/') }}">{{ config('app.name') }}</a>
+      <a class="navbar-brand" href="{{ url('/') }}">
+        <i class="fa fa-address-book text-primary mr-1"></i>
+        {{ config('app.name') }}
+      </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
