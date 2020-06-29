@@ -7,6 +7,7 @@
                     name="body"
                     class="form-control border-0 bg-light"
                     :placeholder="`¿Qué estás pensando ${currentUser.name}?`"
+                    required
                 ></textarea>
             </div>
             <div class="card-footer">
@@ -31,9 +32,12 @@ export default {
     },
     methods: {
         submit() {
-            axios.post("/statuses", { body: this.body }).then(resp => {
-                EventBus.$emit("status-created", resp.data.data);
+            axios.post("/statuses", { body: this.body }).then(res => {
+                EventBus.$emit("status-created", res.data.data);
                 this.body = "";
+            })
+            .catch(err => {
+                console.log(err.response.data)
             });
         }
     }

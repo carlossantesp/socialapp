@@ -1,0 +1,85 @@
+<template>
+    <div class="card mb-3 border-0 shadow-sm">
+        <div class="card-body d-flex flex-column">
+            <div class="d-flex align-items-center mb-3">
+                <img
+                    class="rounded mr-3 shadow-sm"
+                    width="40px"
+                    src="/img/default-avatar.jpg"
+                    alt=""
+                />
+                <div>
+                    <h5 class="mb-1">{{ status.user_name }}</h5>
+                    <div class="small text-muted">{{ status.ago }}</div>
+                </div>
+            </div>
+
+            <p class="card-text text-secondary">{{ status.body }}</p>
+        </div>
+        <div
+            class="card-footer p-2 d-flex justify-content-between align-items-center"
+        >
+            <like-btn
+                :status="status"
+            ></like-btn>
+
+            <div class="mr-2 text-secondary">
+                <i class="far fa-thumbs-up"></i>
+                <span dusk="likes-count">{{ status.likes_count }}</span>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div v-for="(comment,index) in comments" :key="index" class="mb-3">
+                <img width="34px" class="rounded shadow-sm float-left mr-2" :src="comment.user_avatar" :alt="comment.user_name">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-2 text-secondary">
+                        <a href="#"><strong>{{ comment.user_name }}</strong></a>
+                        {{ comment.body }}
+                    </div>
+                </div>
+            </div>
+            <form @submit.prevent="addComment" v-if="isAuthenticated">
+                <div class="d-flex align-items-center">
+                    <img width="34px" class="rounded shadow-sm mr-2" src="/img/default-avatar.jpg" :alt="currentUser.user_name">
+                    <div class="input-group">
+                        <textarea class="form-control border-0 shadow-sm" rows="1" name="comment" v-model="newComment" placeholder="Escriba un comentario..." required></textarea>
+                        <div class="input-group-append">
+                            <button type="submit" dusk="comment-btn" class="btn btn-primary">Enviar</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</template>
+
+<script>
+import LikeBtn from './LikeBtn'
+export default {
+    components: { LikeBtn },
+    props:{
+        status: {
+            type: Object,
+            required: true
+        }
+    },
+    data(){
+        return {
+            newComment: '',
+            comments: this.status.comments
+        }
+    },
+    methods: {
+        addComment(){
+            axios.post(`/statuses/${this.status.id}/comments`, {body: this.newComment})
+            .then(res => {
+                this.comments.push(res.data.data)
+            })
+            .catch(err => {
+                console.log(err.response.data)
+            });
+        }
+    }
+
+}
+</script>

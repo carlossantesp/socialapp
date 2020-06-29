@@ -2,6 +2,8 @@
 
 namespace Tests\Unit\Http\Resources;
 
+use App\Comment;
+use App\Http\Resources\CommentResource;
 use App\Http\Resources\StatusResource;
 use App\Status;
 // use PHPUnit\Framework\TestCase;
@@ -18,28 +20,29 @@ class StatusResourceTest extends TestCase
     public function a_status_resources_must_have_the_necessary_fields()
     {
         $status = factory(Status::class)->create();
+        factory(Comment::class)->create(['status_id'=>$status->id]);
 
         $statusResource = StatusResource::make($status)->resolve();
 
         $this->assertEquals(
-            $status->id, 
+            $status->id,
             $statusResource['id']
         );
 
         $this->assertEquals(
-            $status->body, 
+            $status->body,
             $statusResource['body']
         );
         $this->assertEquals(
-            $status->user->name, 
+            $status->user->name,
             $statusResource['user_name']
         );
         $this->assertEquals(
-            '/img/default-avatar.jpg', 
+            '/img/default-avatar.jpg',
             $statusResource['user_avatar']
         );
         $this->assertEquals(
-            $status->created_at->diffForHumans(), 
+            $status->created_at->diffForHumans(),
             $statusResource['ago']
         );
         $this->assertEquals(
@@ -49,6 +52,16 @@ class StatusResourceTest extends TestCase
         $this->assertEquals(
             0,
             $statusResource['likes_count']
+        );
+        // dd($statusResource['comments']->first()->resource);
+        $this->assertEquals(
+            CommentResource::class,
+            $statusResource['comments']->collects
+        );
+
+        $this->assertInstanceOf(
+            Comment::class,
+            $statusResource['comments']->first()->resource
         );
     }
 }

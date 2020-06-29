@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Comment;
 use App\Like;
 use App\Status;
 use App\User;
@@ -21,6 +22,18 @@ class StatusTest extends TestCase
         $status = factory(Status::class)->create();
 
         $this->assertInstanceOf(User::class, $status->user);
+    }
+
+    /**
+     * @test
+     */
+    public function a_comments_has_many_likes()
+    {
+        $status = factory(Status::class)->create();
+
+        factory(Comment::class)->create(['status_id' => $status->id]);
+
+        $this->assertInstanceOf(Comment::Class, $status->comments->first());
     }
 
     /**
@@ -79,13 +92,13 @@ class StatusTest extends TestCase
         $status = factory(Status::class)->create();
 
         $this->assertFalse($status->isLiked());
-        
+
         $this->actingAs(factory(User::class)->create());
-        
+
         $this->assertFalse($status->isLiked());
-        
+
         $status->like();
-        
+
         $this->assertTrue($status->isLiked());
     }
 

@@ -15,8 +15,8 @@ Vue.component(
     require("./components/StatusFormComponent.vue").default
 );
 Vue.component(
-    "statuses-list",
-    require("./components/StatusesListComponent.vue").default
+    "status-list",
+    require("./components/StatusListComponent.vue").default
 );
 
 import auth from "./mixins/auth";
