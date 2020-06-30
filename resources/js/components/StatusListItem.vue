@@ -20,7 +20,9 @@
             class="card-footer p-2 d-flex justify-content-between align-items-center"
         >
             <like-btn
-                :status="status"
+                :model="status"
+                :url="`/statuses/${status.id}/likes`"
+                dusk="like-btn"
             ></like-btn>
 
             <div class="mr-2 text-secondary">
@@ -30,13 +32,31 @@
         </div>
         <div class="card-footer">
             <div v-for="(comment,index) in comments" :key="index" class="mb-3">
-                <img width="34px" class="rounded shadow-sm float-left mr-2" :src="comment.user_avatar" :alt="comment.user_name">
-                <div class="card border-0 shadow-sm">
-                    <div class="card-body p-2 text-secondary">
-                        <a href="#"><strong>{{ comment.user_name }}</strong></a>
-                        {{ comment.body }}
+                <div class="d-flex">
+                    <img height="34px" width="34px" class="rounded shadow-sm mr-2" :src="comment.user_avatar" :alt="comment.user_name">
+                    <div class="flex-grow-1">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body p-2 text-secondary">
+                                <a href="#"><strong>{{ comment.user_name }}</strong></a>
+                                {{ comment.body }}
+                            </div>
+                        </div>
+                        <small class="float-right badge badge-pill badge-primary py-1 px-2 mt-1" dusk="comment-likes-count">
+                            <i class="fa fa-thumbs-up"></i>
+                            {{ comment.likes_count }}
+                        </small>
+
+                        <like-btn
+                            :model="comment"
+                            :url="`/comments/${comment.id}/likes`"
+                            dusk="comment-like-btn"
+                            class="comment-like-btn"
+                        ></like-btn>
                     </div>
                 </div>
+
+
+
             </div>
             <form @submit.prevent="addComment" v-if="isAuthenticated">
                 <div class="d-flex align-items-center">
@@ -78,7 +98,7 @@ export default {
             .catch(err => {
                 console.log(err.response.data)
             });
-        }
+        },
     }
 
 }
