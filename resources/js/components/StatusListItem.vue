@@ -5,11 +5,13 @@
                 <img
                     class="rounded mr-3 shadow-sm"
                     width="40px"
-                    src="/img/default-avatar.jpg"
-                    alt=""
+                    :src="status.user.avatar"
+                    :alt= "status.user.name"
                 />
                 <div>
-                    <h5 class="mb-1">{{ status.user_name }}</h5>
+                    <h5 class="mb-1">
+                        <a :href="status.user.link">{{ status.user.name }}</a>
+                    </h5>
                     <div class="small text-muted">{{ status.ago }}</div>
                 </div>
             </div>
@@ -33,11 +35,11 @@
         <div class="card-footer">
             <div v-for="(comment,index) in comments" :key="index" class="mb-3">
                 <div class="d-flex">
-                    <img height="34px" width="34px" class="rounded shadow-sm mr-2" :src="comment.user_avatar" :alt="comment.user_name">
+                    <img height="34px" width="34px" class="rounded shadow-sm mr-2" :src="comment.user.avatar" :alt="comment.user.name">
                     <div class="flex-grow-1">
                         <div class="card border-0 shadow-sm">
                             <div class="card-body p-2 text-secondary">
-                                <a href="#"><strong>{{ comment.user_name }}</strong></a>
+                                <a :href="comment.user.link"><strong>{{ comment.user.name }}</strong></a>
                                 {{ comment.body }}
                             </div>
                         </div>
@@ -60,7 +62,7 @@
             </div>
             <form @submit.prevent="addComment" v-if="isAuthenticated">
                 <div class="d-flex align-items-center">
-                    <img width="34px" class="rounded shadow-sm mr-2" src="/img/default-avatar.jpg" :alt="currentUser.user_name">
+                    <img width="34px" class="rounded shadow-sm mr-2" :src="currentUser.avatar" :alt="currentUser.name">
                     <div class="input-group">
                         <textarea class="form-control border-0 shadow-sm" rows="1" name="comment" v-model="newComment" placeholder="Escriba un comentario..." required></textarea>
                         <div class="input-group-append">

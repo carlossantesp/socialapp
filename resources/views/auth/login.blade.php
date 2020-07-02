@@ -4,6 +4,8 @@
 <div class="container">
     <div class="row">
         <div class="col-md-6 mx-auto">
+            @include('partials.validation-errors')
+
             <div class="card border-0 bg-light px-4 py-2">
               <form action="{{ route('login') }}" method="POST">
                 @csrf
@@ -16,7 +18,7 @@
                     <label>Contraseña:</label>
                     <input class="form-control border-0" type="password" name="password" placeholder="Tu contraseña...">
                   </div>
-                  <button class="btn btn-primary btn-block" type="submit" id="login-btn">Login</button>
+                  <button class="btn btn-primary btn-block" type="submit" dusk="login-btn">Login</button>
                 </div>
               </form>
             </div>

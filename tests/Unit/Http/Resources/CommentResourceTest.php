@@ -4,6 +4,8 @@ namespace Tests\Unit\Http\Resources;
 
 use App\Http\Resources\CommentResource;
 use App\Comment;
+use App\Http\Resources\UserResource;
+use App\User;
 // use PHPUnit\Framework\TestCase;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -30,20 +32,20 @@ class CommentResourceTest extends TestCase
             $commentResource['body']
         );
         $this->assertEquals(
-            $comment->user->name,
-            $commentResource['user_name']
-        );
-        $this->assertEquals(
-            '/img/default-avatar.jpg',
-            $commentResource['user_avatar']
-        );
-        $this->assertEquals(
             0,
             $commentResource['likes_count']
         );
         $this->assertEquals(
             false,
             $commentResource['is_liked']
+        );
+        $this->assertInstanceOf(
+            UserResource::class,
+            $commentResource['user']
+        );
+        $this->assertInstanceOf(
+            User::class,
+            $commentResource['user']->resource
         );
     }
 }

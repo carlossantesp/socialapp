@@ -30,4 +30,7 @@ Route::post('statuses/{status}/comments','StatusCommentController@store')->name(
 Route::post('comments/{comment}/likes', 'CommentLikeController@store')->name('comments.likes.store')->middleware('auth');
 Route::delete('comments/{comment}/likes', 'CommentLikeController@destroy')->name('comments.likes.destroy')->middleware('auth');
 
+// Users routes
+Route::get('@{user}','UserController@show')->name('users.show');
+
 Route::auth();
