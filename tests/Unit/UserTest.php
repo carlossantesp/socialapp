@@ -2,14 +2,16 @@
 
 namespace Tests\Unit;
 
-
+use App\Status;
 use App\User;
 use Tests\TestCase;
 // use PHPUnit\Framework\TestCase;
-// use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class UserTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
      * @test
      */
@@ -38,5 +40,17 @@ class UserTest extends TestCase
 
         $this->assertEquals('/img/default-avatar.jpg', $user->avatar());
         $this->assertEquals('/img/default-avatar.jpg', $user->avatar);
+    }
+
+    /**
+     * @test
+     */
+    public function a_user_has_many_statuses()
+    {
+        $user = factory(User::class)->create();
+
+        factory(Status::class)->create(['user_id' => $user->id]);
+
+        $this->assertInstanceOf(Status::class, $user->statuses->first());
     }
 }
