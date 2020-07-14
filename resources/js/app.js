@@ -18,6 +18,15 @@ Vue.component(
     "status-list",
     require("./components/StatusListComponent.vue").default
 );
+Vue.component(
+    "friendship-btn",
+    require("./components/FriendshipBtn.vue").default
+);
+
+Vue.component(
+    "accept-friendship-btn",
+    require("./components/AcceptFriendshipBtn.vue").default
+);
 
 import auth from "./mixins/auth";
 Vue.mixin(auth);
