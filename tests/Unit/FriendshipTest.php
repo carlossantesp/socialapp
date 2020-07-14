@@ -39,4 +39,35 @@ class FriendshipTest extends TestCase
 
         $this->assertInstanceOf(User::class, $friendship->recipient);
     }
+
+    /**
+     * @test
+     */
+    public function can_find_friendships_by_sender_and_recipient()
+    {
+        $sender = factory(User::class)->create();
+        $recipient = factory(User::class)->create();
+
+        factory(Friendship::class,2)->create([
+            'recipient_id' => $recipient->id
+        ]);
+        factory(Friendship::class,2)->create([
+            'sender_id' => $sender->id
+        ]);
+
+        Friendship::create([
+            'sender_id' => $sender->id,
+            'recipient_id' => $recipient->id,
+        ]);
+
+        $foundFriendship = Friendship::betweenUsers($sender, $recipient)->first();
+
+        $this->assertEquals($sender->id, $foundFriendship->sender_id);
+        $this->assertEquals($recipient->id, $foundFriendship->recipient_id);
+
+        $foundFriendship2 = Friendship::betweenUsers($recipient, $sender)->first();
+
+        $this->assertEquals($sender->id, $foundFriendship2->sender_id);
+        $this->assertEquals($recipient->id, $foundFriendship2->recipient_id);
+    }
 }
