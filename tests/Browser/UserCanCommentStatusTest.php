@@ -50,4 +50,26 @@ class UserCanCommentStatusTest extends DuskTestCase
                     ->assertSee('Mi primer comentario');
         });
     }
+
+    /**
+     * @test
+     */
+    public function users_can_see_comments_in_real_time()
+    {
+        $status = factory(Status::class)->create();
+        $user = factory(User::class)->create();
+
+        $this->browse(function (Browser $browser1, Browser $browser2) use ($status, $user) {
+            $browser1->visit('/');
+
+            $browser2->loginAs($user)
+                    ->visit('/')
+                    ->waitForText($status->body)
+                    ->type('comment', 'Mi primer comentario')
+                    ->press('@comment-btn');
+
+            $browser1->waitForText('Mi primer comentario')
+                    ->assertSee('Mi primer comentario');
+        });
+    }
 }
