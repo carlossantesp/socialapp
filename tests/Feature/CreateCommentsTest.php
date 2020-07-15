@@ -7,7 +7,6 @@ use App\Status;
 use App\User;
 use App\Events\CommentCreated;
 use App\Http\Resources\CommentResource;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Broadcast;
@@ -70,11 +69,12 @@ class CreateCommentsTest extends TestCase
             ->postJson(route('statuses.comments.store',$status), ['body' => 'Mi primer comentario']);
 
         Event::assertDispatched(CommentCreated::class, function($commentCreatedEvent) {
-            $this->assertInstanceOf(ShouldBroadcast::class,$commentCreatedEvent);
+
             $this->assertInstanceOf(CommentResource::class,$commentCreatedEvent->comment);
-            $this->assertInstanceOf(Comment::class,$commentCreatedEvent->comment->resource);
-            $this->assertEquals(Comment::first()->id, $commentCreatedEvent->comment->id);
-            $this->assertEquals('socket-id', $commentCreatedEvent->socket, 'The event '. get_class($commentCreatedEvent) . ' must call the method "dontBroadcastToCurrentUser" in the constructor.');
+            $this->assertTrue(Comment::first()->is($commentCreatedEvent->comment->resource));
+            $this->assertEventChannelType('public',$commentCreatedEvent);
+            $this->assertEventChannelName("statuses.{$commentCreatedEvent->comment->status_id}.comments",$commentCreatedEvent);
+            $this->assertDontBroadcastToCurrentUser($commentCreatedEvent);
 
             return true;
         });
