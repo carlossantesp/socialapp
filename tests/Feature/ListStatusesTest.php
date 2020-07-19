@@ -71,4 +71,17 @@ class ListStatusesTest extends TestCase
         );
 
     }
+
+    /**
+     * @test
+     */
+    public function can_see_individual_status()
+    {
+        $this->withoutExceptionHandling();
+
+        $status = factory(Status::class)->create();
+
+        $this->get($status->path())
+            ->assertSee($status->body);
+    }
 }

@@ -31,7 +31,10 @@ export default {
                 } else {
                     this.model.likes_count--;
                 }
-            });
+            })
+            .catch(err => {
+                console.log(err);
+            })
         },
     },
     computed:{

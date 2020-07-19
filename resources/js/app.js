@@ -28,6 +28,11 @@ Vue.component(
     require("./components/AcceptFriendshipBtn.vue").default
 );
 
+Vue.component(
+    "notification-list",
+    require("./components/NotificationList.vue").default
+);
+
 import auth from "./mixins/auth";
 Vue.mixin(auth);
 

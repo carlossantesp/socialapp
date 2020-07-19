@@ -27,6 +27,8 @@ class HasLikesTest extends TestCase
         Schema::create('model_with_likes', function($table){
             $table->increments('id');
         });
+
+        Event::fake([ModelLiked::class, ModelUnliked::class]);
     }
 
     /**
@@ -120,18 +122,18 @@ class HasLikesTest extends TestCase
      */
     public function an_event_is_fired_when_a_model_is_liked()
     {
-        Event::fake(ModelLiked::class);
         Broadcast::shouldReceive('socket')->andReturn('socket-id');
 
-        $this->actingAs(factory(User::class)->create());
+        $this->actingAs($likeSender = factory(User::class)->create());
 
         $model = new ModelWithLike(['id' => 1]);
 
         $model->like();
 
-        Event::assertDispatched(ModelLiked::class, function($event) {
+        Event::assertDispatched(ModelLiked::class, function($event) use ($likeSender) {
 
             $this->assertInstanceOf(ModelWithLike::class,$event->model);
+            $this->assertTrue($event->likeSender->is($likeSender));
             $this->assertEventChannelType('public',$event);
             $this->assertEventChannelName($event->model->eventChannelName(),$event);
             $this->assertDontBroadcastToCurrentUser($event);
@@ -145,7 +147,6 @@ class HasLikesTest extends TestCase
      */
     public function an_event_is_fired_when_a_model_is_unliked()
     {
-        Event::fake(ModelUnliked::class);
         Broadcast::shouldReceive('socket')->andReturn('socket-id');
 
         $this->actingAs(factory(User::class)->create());

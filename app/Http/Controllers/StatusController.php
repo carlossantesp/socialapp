@@ -13,6 +13,14 @@ class StatusController extends Controller
     {
         return StatusResource::collection(Status::latest()->paginate());
     }
+
+    public function show(Status $status)
+    {
+        return view('statuses.show', [
+            'status' => StatusResource::make($status)
+        ]);
+    }
+
     public function store(StatusRequest $request)
     {
         $status = $request->user()->statuses()->create([

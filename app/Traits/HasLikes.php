@@ -5,7 +5,6 @@ namespace App\Traits;
 use App\Events\ModelLiked;
 use App\Events\ModelUnliked;
 use App\Like;
-use Tests\Browser\Pages\Page;
 
 trait HasLikes
 {
@@ -20,7 +19,7 @@ trait HasLikes
             'user_id'=> auth()->id()
         ]);
 
-        ModelLiked::dispatch($this);
+        ModelLiked::dispatch($this, auth()->user());
     }
 
     public function unlike()

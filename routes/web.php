@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::view('/', 'welcome');
 
 // Statuses routes
+Route::get('statuses/{status}', 'StatusController@show')->name('statuses.show');
 Route::get('statuses','StatusController@index')->name('statuses.index');
 Route::post('statuses', 'StatusController@store')->name('statuses.store')->middleware('auth');
 
@@ -44,5 +45,8 @@ Route::delete('friendships/{user}','FriendshipController@destroy')->name('friend
 Route::get('friendships/requests', 'AcceptFriendshipController@index')->name('accept-friendships.index')->middleware('auth');
 Route::post('accept-friendships/{sender}', 'AcceptFriendshipController@store')->name('accept-friendships.store')->middleware('auth');
 Route::delete('accept-friendships/{sender}', 'AcceptFriendshipController@destroy')->name('accept-friendships.destroy')->middleware('auth');
+
+// Notification routes
+Route::get('notifications', 'NotificationController@index')->name('notifications.index')->middleware('auth');
 
 Route::auth();
