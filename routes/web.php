@@ -49,4 +49,8 @@ Route::delete('accept-friendships/{sender}', 'AcceptFriendshipController@destroy
 // Notification routes
 Route::get('notifications', 'NotificationController@index')->name('notifications.index')->middleware('auth');
 
+// Read Notification routes
+Route::post('read-notifications/{notification}', 'ReadNotificationController@store')->name('read-notifications.store')->middleware('auth');
+Route::delete('read-notifications/{notification}', 'ReadNotificationController@destroy')->name('read-notifications.destroy')->middleware('auth');
+
 Route::auth();

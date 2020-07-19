@@ -33,6 +33,11 @@ Vue.component(
     require("./components/NotificationList.vue").default
 );
 
+Vue.component(
+    "status-list-item",
+    require("./components/StatusListItem.vue").default
+);
+
 import auth from "./mixins/auth";
 Vue.mixin(auth);
 
