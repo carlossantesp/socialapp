@@ -2392,6 +2392,20 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this = this;
 
+    if (this.isAuthenticated) {
+      Echo["private"]("App.User.".concat(this.currentUser.id)).notification(function (notification) {
+        _this.count++;
+
+        _this.notifications.push({
+          id: notification.id,
+          data: {
+            link: notification.link,
+            message: notification.message
+          }
+        });
+      });
+    }
+
     axios.get('/notifications').then(function (res) {
       _this.notifications = res.data;
 
@@ -45431,9 +45445,14 @@ var render = function() {
       [
         _vm._t("default"),
         _vm._v(" "),
-        _c("span", { staticClass: "badge badge-danger" }, [
-          _vm._v(_vm._s(_vm.count))
-        ])
+        _c(
+          "span",
+          {
+            staticClass: "badge badge-danger",
+            attrs: { dusk: "notifications-count" }
+          },
+          [_vm._v(_vm._s(_vm.count))]
+        )
       ],
       2
     ),

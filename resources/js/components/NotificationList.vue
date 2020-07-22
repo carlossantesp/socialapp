@@ -5,7 +5,7 @@
         dusk='notifications' id="dropdownNotification"
         role="button" data-toggle="dropdown" aria-haspopup="true"
         aria-expanded="false">
-        <slot></slot> <span class="badge badge-danger">{{ count }}</span>
+        <slot></slot> <span dusk="notifications-count" class="badge badge-danger">{{ count }}</span>
         </a>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownNotification">
             <notification-list-item
@@ -30,6 +30,21 @@ export default {
         }
     },
     created(){
+        if(this.isAuthenticated)
+        {
+            Echo.private(`App.User.${this.currentUser.id}`)
+                .notification(notification => {
+                    this.count++;
+                    this.notifications.push({
+                        id: notification.id,
+                        data: {
+                            link: notification.link,
+                            message: notification.message,
+                        }
+                    });
+                });
+        }
+
         axios.get('/notifications')
         .then(res => {
             this.notifications = res.data;

@@ -38,6 +38,7 @@ class SendNewLikeNotificationTest extends TestCase
             NewLikeNotification::class,
             function($notification, $channels) use($likeSender, $status) {
                 $this->assertContains('database', $channels);
+                $this->assertContains('broadcast', $channels);
                 $this->assertTrue($notification->model->is($status));
                 $this->assertTrue($notification->likeSender->is($likeSender));
                 return true;
