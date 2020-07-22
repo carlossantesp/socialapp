@@ -18,7 +18,7 @@ class Comment extends Model
 
     public function path()
     {
-        // TODO
+        // TODO: Implement path() method.
     }
 
 }
