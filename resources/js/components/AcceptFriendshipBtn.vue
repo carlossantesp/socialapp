@@ -1,18 +1,26 @@
 <template>
-    <div>
-        <div v-if="localFriendshipStatus === 'pending'">
-            <span>{{ sender.name }}</span> te ha enviado una solicitud de amistad
-            <button dusk="accept-friendship" @click="acceptFriendshipRequest">Aceptar solicitud</button>
-            <button dusk="deny-friendship" @click="denyFriendshipRequest">Denegar solicitud</button>
+    <div class="d-flex justify-content-between bg-light p-3 rounded mb-3 shadow-sm">
+        <div>
+            <div v-if="localFriendshipStatus === 'pending'">
+                <span>{{ sender.name }}</span> te ha enviado una solicitud de amistad
+            </div>
+            <div v-if="localFriendshipStatus === 'accepted'">
+                Tu y <span>{{ sender.name }}</span> son amigos
+            </div>
+            <div v-if="localFriendshipStatus === 'denied'">
+                Solicitud denegada de <span>{{ sender.name }}</span>
+            </div>
+            <div v-if="localFriendshipStatus === 'deleted'">
+                Solicitud eliminada de <span>{{ sender.name }}</span>
+            </div>
         </div>
-        <div v-else-if="localFriendshipStatus === 'accepted'">
-            Tu y <span>{{ sender.name }}</span> son amigos
+        <div>
+            <button class="btn btn-sm btn-primary" v-if="localFriendshipStatus === 'pending'" dusk="accept-friendship" @click="acceptFriendshipRequest">Aceptar solicitud</button>
+            <button class="btn btn-sm btn-warning" v-if="localFriendshipStatus === 'pending'" dusk="deny-friendship" @click="denyFriendshipRequest">Denegar solicitud</button>
+            <button class="btn btn-sm btn-danger" v-if="localFriendshipStatus !== 'deleted'" dusk="delete-friendship" @click="deleteFriendship">Eliminar</button>
         </div>
-        <div v-else-if="localFriendshipStatus === 'denied'">
-            Solicitud denegada de <span>{{ sender.name }}</span>
-        </div>
-        <div v-if="localFriendshipStatus === 'deleted'">Solicitud eliminada</div>
-        <button v-else dusk="delete-friendship" @click="deleteFriendship">Eliminar</button>
+
+
     </div>
 </template>
 

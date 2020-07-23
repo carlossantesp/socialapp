@@ -26,6 +26,9 @@
                 <a href="{{ route('login') }}" class="nav-link">Login</a>
             </li>
             @else
+            <li class="nav-item">
+                <a href="{{ route('accept-friendships.index') }}" class="nav-link"><i class="fa fa-user-plus"></i> Solicitudes</a>
+            </li>
             <notification-list><i class="fa fa-bell"></i></notification-list>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

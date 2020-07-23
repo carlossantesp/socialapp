@@ -12,19 +12,20 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label>Username:</label>
-                            <input class="form-control border-0" type="text" name="name" placeholder="Tu nombre de usuario...">
+                            <input class="form-control border-0" type="text" name="name" placeholder="Tu nombre de usuario..." value="{{ old('name') }}">
                         </div>
                         <div class="form-group">
                             <label>Nombre:</label>
-                            <input class="form-control border-0" type="text" name="first_name" placeholder="Tu nombre...">
+                            <input class="form-control border-0" type="text" name="first_name" placeholder="Tu nombre..."
+                            value="{{ old('first_name') }}">
                         </div>
                         <div class="form-group">
                             <label>Apellidos:</label>
-                            <input class="form-control border-0" type="text" name="last_name" placeholder="Tu apellido...">
+                            <input class="form-control border-0" type="text" name="last_name" placeholder="Tu apellido..." value="{{ old('last_name') }}">
                         </div>
                         <div class="form-group">
                             <label>Email:</label>
-                            <input class="form-control border-0" type="email" name="email" placeholder="Tu correo electrónico...">
+                            <input class="form-control border-0" type="email" name="email" placeholder="Tu correo electrónico..." value="{{ old('email') }}">
                         </div>
                         <div class="form-group">
                             <label>Contraseña:</label>
