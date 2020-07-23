@@ -2180,31 +2180,34 @@ __webpack_require__.r(__webpack_exports__);
     recipient: {
       type: Object,
       required: true
-    },
-    friendshipStatus: {
-      type: String,
-      required: true
     }
   },
   data: function data() {
     return {
-      localFriendshipStatus: this.friendshipStatus
+      friendshipStatus: ''
     };
+  },
+  created: function created() {
+    var _this = this;
+
+    axios.get("/friendships/".concat(this.recipient.name)).then(function (resp) {
+      _this.friendshipStatus = resp.data.friendship_status;
+    });
   },
   methods: {
     toogleFriendshipStatus: function toogleFriendshipStatus() {
-      var _this = this;
+      var _this2 = this;
 
       this.redirectIfGuest();
       var method = this.getMethod();
       axios[method]("friendships/".concat(this.recipient.name)).then(function (res) {
-        _this.localFriendshipStatus = res.data.friendship_status;
+        _this2.friendshipStatus = res.data.friendship_status;
       })["catch"](function (err) {
         console.log(err.response.data);
       });
     },
     getMethod: function getMethod() {
-      if (this.localFriendshipStatus === 'pending' || this.localFriendshipStatus === 'accepted') {
+      if (this.friendshipStatus === 'pending' || this.friendshipStatus === 'accepted') {
         return 'delete';
       }
 
@@ -2213,15 +2216,15 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     getText: function getText() {
-      if (this.localFriendshipStatus === 'pending') {
+      if (this.friendshipStatus === 'pending') {
         return 'Cancelar solicitud';
       }
 
-      if (this.localFriendshipStatus === 'accepted') {
+      if (this.friendshipStatus === 'accepted') {
         return 'Eliminar de mis amigos';
       }
 
-      if (this.localFriendshipStatus === 'denied') {
+      if (this.friendshipStatus === 'denied') {
         return 'Solicitud denegada';
       }
 
@@ -2269,12 +2272,7 @@ __webpack_require__.r(__webpack_exports__);
       var method = this.model.is_liked ? 'delete' : 'post';
       axios[method](this.url).then(function (resp) {
         _this.model.is_liked = !_this.model.is_liked;
-
-        if (method === 'post') {
-          _this.model.likes_count++;
-        } else {
-          _this.model.likes_count--;
-        }
+        _this.model.likes_count = resp.data.likes_count;
       })["catch"](function (err) {
         console.log(err);
       });

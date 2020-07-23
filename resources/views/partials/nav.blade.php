@@ -27,6 +27,9 @@
             </li>
             @else
             <li class="nav-item">
+                <a href="{{ route('friends.index') }}" class="nav-link"><i class="fa fa-users"></i> Amigos</a>
+            </li>
+            <li class="nav-item">
                 <a href="{{ route('accept-friendships.index') }}" class="nav-link"><i class="fa fa-user-plus"></i> Solicitudes</a>
             </li>
             <notification-list><i class="fa fa-bell"></i></notification-list>

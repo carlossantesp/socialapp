@@ -51,6 +51,7 @@ class UsersCanLikesCommentsTest extends DuskTestCase
 
             $browser2->loginAs($user)
                     ->visit('/')
+                    ->maximize()
                     ->waitForText($comment->body)
                     ->assertSeeIn('@comment-likes-count',0)
                     ->press('@comment-like-btn')
